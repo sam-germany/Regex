@@ -1,0 +1,239 @@
+Regex
+-----
+https://www.youtube.com/watch?v=sa-TUpSx1JA      <-- see this video for understanding
+
+abcdefghijklnopqrstuvwxyz
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+1234567890
+
+Ha HaHa
+
+MetaCharacters ( Need to Be exaped):
+-[{)\^$|?*+
+
+
+coreyms.coreyms
+321-555-4321
+123.555.1234567890
+123--555--4321
+
+Mr. Schafer
+Mr Smith
+Ms Davis
+------------------------------------------------------------------------------------------------------------------------
+
+.           ---  it matches any  single character,Any Character Except New Line
+\           ---  we use it for escape
+\.          --- if we want to search for (.)  dot then back-slash  we must but a backslash in front of it
+\\          --- if we want to search for (\) back-slash then we must but a backslash in front of it
+
+abc.com     ---  abc\.com       we have to put  (\) backslash before (.) dot, as their is (.) inside the word
+[^ ]    - Matches Characters NOT in brackets
+|       - Either Or
+( )     - Group
+
+Quantifiers:
+*       - 0 or More
++       - 1 or More
+?       - 0 or One
+{3}     - Exact Number
+{3,4}   - Range of Numbers (Minimum, Maximum)
+\d      - Digit (0-9)
+\D      - Not a Digit (0-9)
+\w      - Word Character: it will not search/match for these Character (a-z, A-Z, 0-9, _), all other characters will
+          be matched  like  -[{)\^$|?*+.
+\W      - Word Character: it is opposite of above
+\s      - Whitespace (space, tab, newline)
+\S      - Not Whitespace (space, tab, newline)
+
+\b      - Word Boundary:
+           Case_1:   assume we have a String  "Ha HaHa"    <-- \bHa      -- in this case this regex matches only
+					           first two "Ha Ha"   the last/third "Ha" does not have any own word boundary as it is
+										  attached with second "Ha"
+           Case_2:  "Ha HaHa"   <-- \bHa\b    in this case it will match only first "Ha" as only first "Ha"
+					          has the complete front and back boundry , as the second "Ha"  has only front boundary but
+										not the back Boundary
+
+\B      - Not a Word Boundary:
+          assume we have a String  "Ha HaHa"    <-- \BHa     -- in this case it will make opposite of the above
+					and from this  "Ha HaHa"    only the last third "Ha"  will be matched as it has no self boundary
+
+^       - Beginning of a String or beginning of the Line
+          Case_1:    "Ha HaHa"    <-- ^Ha     -- in this case only first "Ha" will be selected at it is in the
+					                                       beginning of the line/String
+
+$       - End of a String
+          Case_1:    "Ha HaHa"    <-- $Ha     -- in this case only last "Ha" will be selected at it is in the
+																			           end of the line/String
+[]      - Matches Characters in brackets
+          Case_1:
+          Phone Nr 1:  321-555-4321        <-- here it uses (-) minus sign
+          Phone Nr 2:  123.555.1234        <-- here it uses (.) dot sign
+          Phone Nr 3:  123--555--12345     <-- here it uses double (--) minus sigh
+
+          Regex:  \d\d\d[-.]\d\d\d[-.]\d\d\d     <--with this only Nr 1, Nr 2 will phone number will be matched
+          Regex:  \d\d\d[--.]\d\d\d[--.]\d\d\d   <--if we use (--) double minus sign then also it will not match
+
+Case 2:
+-------                                                 the Phone Nr 3
+800-555-1234
+900-555-1234
+
+Regex:  [89]00[-.]\d\d\d[-.]\d\d\d\d              <-- here in the beginning "[89]" it will search for beginning
+                                                     digit  8 or 9, then we put two zero, and rest above is same
+
+--------------------------------------------------
+[^]
+[^a-z]     <-- if we put (^) inside a square brackets then  it will work as a negate,  it will match every character
+              except  lowercase "a" till "z"
+
+e.g
+----
+1: cat
+2: mat
+3: pat
+4: bat
+
+Regex:   [^b]at   <-- in the above case all the first 3 name will be matched
+
+---------------------------------------------
+123.555.1234
+
+\d{3}.\d{3}.\d{4}              <--  {num}   with this we can define how many digit/character we are searching for
+
+-------------------------------------------------------------
+
+e.g
+----
+Mr. Schafer
+Mr Smith
+Ms Davis
+Mrs. Robinson
+Mr. T
+
+Regex:  M(r|s|rs)\.?\s[A-Z]\w*
+
+M               <-- first letter shoud start with "M"
+(r|s|rs)        <-- here we defined a group, that second letter can be anything "r" or "s" or "rs"
+\.              <-- here we are searching for a (.)  dot
+\.?             <-- here (?)  means zero or One (.) ca be their
+\s              <-- after that one empty space should be their
+[A-Z]           <-- after that and upper case character of "A" till "Z"
+[A-Z]\w*        <-- it means it starts with any character from "A" till "Z" and  "\w*" means any number of character after it
+
+
+---------------------------------------------------------------------------------
+e.g
+---
+
+CoreyMSchafer@gmail.com
+Regex:
+[a-zA-Z]+@[a-z-A-Z]+\.com
+
+[a-zA-Z]+    <-- it means any number of characters smaller or bigger as we used (+) after it
+
+[a-zA-Z]+@    <-- it means after these characters their should be a "@" sign
+
+@[a-z-A-Z]+    <-- after  "@" we have used "+"  plus it means any number of character can be com
+
+\.             <-- after that we have searched for  (.)  dot symbol
+
+com            <-- at the end we are searching for  "com"  at end
+
+
+e.g
+---
+CoreyMSchafer@gmail.com
+corey.schafer@university.edu
+
+Regex:  [a-zA-Z.]+@[a-zA-Z]+\.(com|edu)
+
+[a-zA-Z.]+    <-- here we are searching any number of times  smaller or bigger alphabets and also (.) dots
+
+@             <-- after that one @ symbol
+
+@[a-zA-Z]+     <-- after  "@" again any number of time smaller or bigger alphabets
+
+\.            <-- after that we are searching for (.) dot
+
+ (com|edu)    <-- at end we are searching with a group  "com"  or "edu"
+
+
+
+
+e.g
+----
+CoreyMSchafer@gmail.com
+corey.schafer@university.edu
+corey-321-schafer@my-work.net
+
+
+Regex:  [a-zA-Z0-9.-]+@[a-zA-Z-]+\.(com|edu|net)
+
+-----------------------------------------------------------------------
+
+e.g
+---
+
+https://www.google.com
+http://coreyms.com
+https://youtube.com
+https://www.nasa.gov
+
+Regex:   https?://(www\.)?\w+\.\w+
+
+http       <-- the String should start with "http"
+s?         <-- after "http"  the character "s" should be optional as we have used "?" question mark after it
+://        <-- after that their should be a "://"
+(www\.)?   <-- it means after the above character these "www."  can come, it is optional
+\w+        <-- it means any number of characters can come after it
+\.         <-- after that one dot should complete
+\w+        <-- after that any number of  characters can come
+
+---------------------------------------------------------------------------
+e.g
+---
+creating and checking Groups
+--------------------------
+
+https://www.google.com
+http://coreyms.com
+https://youtube.com
+https://www.nasa.gov
+
+Regex:   https?://(www\.)?(\w+)(\.\w+)
+
+(www\.)?           <-- this is optional Group_1
+(\w+)              <-- this is Group_2
+(\.\w+)            <-- this is Group_3
+
+Note: in the Atom when we use  Find -> Find in Buffer
+their is at bottom a field option "Replace in current buffer"
+their if we can put
+$1   for looking Group_1        after that press "Replace All"
+$2   for looking Group_2        after that press "Replace All"
+$3   for looking Group_3        after that press "Replace All"
+
+$2$3      <-- with this it will give us only Group_2 and Group_3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### Sample Regexs ####
+
+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+
